@@ -14,4 +14,40 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_UNIQUE` (`login`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-);
+)ENGINE=InnoDB;
+
+CREATE TABLE `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `reference` varchar(45) DEFAULT NULL,
+  `register` datetime NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
+  `type` varchar(45) NOT NULL,
+  `price` int NOT NULL DEFAULT '0',
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_USER_ORDER_idx` (`user_id`),
+  CONSTRAINT `FK_USER_ORDER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE `productos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nameproduct` varchar(255) NOT NULL,
+  `productprice` int NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `short` varchar(255) DEFAULT NULL,
+  `photo` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `ordersdetail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_ORDER_id` (`order_id`),
+  KEY `FK_PRODUCT_id` (`product_id`),
+  CONSTRAINT `FK_ORDER_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_PRODUCT_id` FOREIGN KEY (`product_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE=InnoDB;
+
