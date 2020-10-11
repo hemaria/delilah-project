@@ -1,5 +1,10 @@
 CREATE SCHEMA `delilah`;
 
+DROP TABLE IF EXISTS `ordersdetail`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `productos`;
+DROP TABLE IF EXISTS `users`;
+
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
@@ -24,34 +29,35 @@ CREATE TABLE `orders` (
   `register` datetime NOT NULL,
   `status` int NOT NULL DEFAULT '1',
   `type` varchar(45) NOT NULL,
-  `price` int NOT NULL DEFAULT '0',
+  `price` float NOT NULL DEFAULT '0',
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_USER_ORDER_idx` (`user_id`),
   CONSTRAINT `FK_USER_ORDER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE `productos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nameproduct` varchar(255) NOT NULL,
-  `productprice` int NOT NULL,
+  `productprice` float NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `short` varchar(255) DEFAULT NULL,
   `photo` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE `ordersdetail` (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
   `quantity` int NOT NULL,
+  `comments` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ORDER_id` (`order_id`),
   KEY `FK_PRODUCT_id` (`product_id`),
   CONSTRAINT `FK_ORDER_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_PRODUCT_id` FOREIGN KEY (`product_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE=InnoDB;
+);
 
 -- User Admin
 INSERT INTO `users` (`name`, `login`, `email`, `pwd`, `role`, `register`, `status`) VALUES ('Administrator', 'admin', 'admin@mail.com', SHA1('admdelilah'), 'admin', '2020-10-10', '1');

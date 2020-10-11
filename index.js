@@ -31,10 +31,8 @@ function authenticated(request, response, next) {
     const token = request.headers.authorization.split(" ")[1];
     const data = jwt.verify(token, SECRET_KEY);
     request.uid = data.id;
-    request.role = "admin";
-    if (next) {
-      return next();
-    }
+    request.role = data.role;
+    return next();
   } catch (err) {
     message = "You must provide a valid access_token";
   }
@@ -148,7 +146,7 @@ function validate_product(request, response, next) {
  * Homepage
  */
 app.get("/", (request, response) => {
-  response.send("Executed agan!!!");
+  response.send("Welcome!!!");
 });
 
 // LOGIN ================================================
@@ -176,7 +174,6 @@ app.post("/login", async (request, response) => {
   } catch (err) {
     response.status(400);
     response.json({
-      result: "error",
       message: "Combination user/password not found",
     });
   }
@@ -198,7 +195,7 @@ app.post("/user", validate_user, async (request, response) => {
     doctype,
     docnum,
   } = request.body;
-  const date = moment().format("YYYY/MM/DD HH:mm:ss");
+  const date = moment().format("YYYY-MM-DD HH:mm:ss");
   const query = `INSERT INTO users (name, login, email, pwd, role, address, cellphone, doctype, docnum, register, status) VALUES ('${name}', '${login}', '${email}', SHA1('${password}'), 'user', '${address}', '${cellphone}', '${doctype}', '${docnum}', '${date}', '1')`;
 
   try {
@@ -219,7 +216,6 @@ app.post("/user", validate_user, async (request, response) => {
     //Error
     response.status(400);
     response.json({
-      result: "error",
       message: err.toString(),
     });
   }
@@ -267,30 +263,22 @@ app.patch("/order/:id", authorization, (request, response) => {
 /**
  * Get list of products
  */
-app.get("/product", authenticated, (request, response) => {
-  const result = {
-    products: [
-      {
-        id: 1,
-        name: "Hamburguer",
-        price: 5.99,
-      },
-      {
-        id: 2,
-        name: "Hotdog",
-        price: 4.95,
-      },
-      {
-        id: 3,
-        name: "Cocacola",
-        price: 2.0,
-      },
-    ],
-  };
+app.get("/product", authenticated, async (request, response) => {
+  const query = `SELECT * FROM productos`;
 
-  //Output response
-  response.status(200);
-  response.json(result);
+  try {
+    await sql.query(query, { raw: false }).then(([result]) => {
+      //Output response
+      response.status(200);
+      response.json(result);
+    });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
 });
 
 //CRUD PRODUCTS ==========================================
@@ -298,71 +286,123 @@ app.get("/product", authenticated, (request, response) => {
 /**
  * Add product
  */
-app.post("/product", [authorization, validate_product], (request, response) => {
-  const result = {
-    result: "success",
-    message: "Create a new product",
-    product: {
-      id: 1,
-    },
-  };
+app.post(
+  "/product",
+  [authorization, validate_product],
+  async (request, response) => {
+    const { name, price, pic, description, short } = request.body;
+    const query = `INSERT INTO productos (nameproduct, productprice, description, short, photo) VALUES ('${name}', ${price}, '${
+      description || ""
+    }', '${short || ""}', '${pic}')`;
 
-  //Output response
-  response.status(201);
-  response.json(result);
-});
+    try {
+      await sql.query(query, { raw: false }).then((id) => {
+        //Output response
+        response.status(201);
+        response.json({
+          message: `Created product ${id[0]}`,
+        });
+      });
+    } catch (err) {
+      //Error
+      response.status(400);
+      response.json({
+        message: err.toString(),
+      });
+    }
+  }
+);
 
 /**
  * Get product
  */
-app.get("/product/:id", authorization, (request, response) => {
-  const product_id = request.params.id;
-  const result = {
-    product: {
-      id: product_id,
-      name: "Cocacola",
-      price: 2.0,
-    },
-  };
+app.get("/product/:id", authorization, async (request, response) => {
+  const query = `SELECT * FROM productos WHERE id=${request.params.id}`;
 
-  //Output response
-  response.status(200);
-  response.json(result);
+  try {
+    await sql.query(query, { raw: false }).then(([result]) => {
+      //Output response
+      response.status(200);
+      response.json(result[0]);
+    });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
 });
 
 /**
  * Update product
  */
-app.patch("/product/:id", authorization, (request, response) => {
-  const product_id = request.params.id;
-  const result = {
-    result: "success",
-    message: "Product updated",
-    product: {
-      id: product_id,
-      name: "Cocacola",
-      price: 2.0,
-    },
-  };
+app.patch(
+  "/product/:id",
+  [authorization, validate_product],
+  async (request, response) => {
+    const product_id = request.params.id;
+    const { name, price, pic, description, short } = request.body;
+    const query = `UPDATE productos SET nameproduct='${name}', productprice='${price}', description='${
+      description || ""
+    }', short='${short || ""}', photo='${pic}' WHERE id=${product_id}`;
 
-  //Output response
-  response.status(200);
-  response.json(result);
-});
+    try {
+      await sql.query(query, { raw: false }).then(([result]) => {
+        //Output response
+        if (result.affectedRows > 0) {
+          response.status(200);
+          response.json({
+            message: `Product ${product_id} updated`,
+          });
+        } else {
+          //Error
+          response.status(400);
+          response.json({
+            message: "No product updated",
+          });
+        }
+      });
+    } catch (err) {
+      //Error
+      response.status(400);
+      response.json({
+        message: err.toString(),
+      });
+    }
+  }
+);
 
 /**
  * Delete product
  */
-app.delete("/product/:id", authorization, (request, response) => {
+app.delete("/product/:id", authorization, async (request, response) => {
   const product_id = request.params.id;
-  const result = {
-    result: "success",
-    message: `Product ${product_id} removed`,
-  };
+  const query = `DELETE FROM productos WHERE id=${product_id}`;
 
-  //Output response
-  response.status(200);
-  response.json(result);
+  try {
+    await sql.query(query, { raw: false }).then(([result]) => {
+      //Output response
+      if (result.affectedRows > 0) {
+        response.status(200);
+        response.json({
+          message: `Product ${product_id} deleted`,
+        });
+      } else {
+        //Error
+        response.status(400);
+        response.json({
+          message: "No product deleted",
+        });
+      }
+    });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
 });
 
 /**
