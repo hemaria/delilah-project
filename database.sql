@@ -1,3 +1,5 @@
+CREATE SCHEMA `delilah`;
+
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
@@ -51,3 +53,5 @@ CREATE TABLE `ordersdetail` (
   CONSTRAINT `FK_PRODUCT_id` FOREIGN KEY (`product_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB;
 
+-- User Admin
+INSERT INTO `users` (`name`, `login`, `email`, `pwd`, `role`, `register`, `status`) VALUES ('Administrator', 'admin', 'admin@mail.com', SHA1('admdelilah'), 'admin', '2020-10-10', '1');
