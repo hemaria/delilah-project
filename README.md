@@ -97,7 +97,7 @@ Admin:
 
 #### `Crear nuevo producto`
 
-Funcionalidad solo para administradores.
+Funcionalidad solo para administradores.<br>
 
 POST/api/product<br>
 POST/http://localhost:3030/product
@@ -113,11 +113,11 @@ Body:
 #### `Obtener todos los productos`
 
 GET/api/product<br>
-GET/http://localhost:3030/product
+GET/http://localhost:3030/product<br>
 
-No necesita body
+No necesita body<br>
 
-Obtener un producto en especifico:
+Obtener un producto en especifico:<br>
 GET/http://localhost:3030/product/{id}<br>
 GET/api/product/{id}
 
@@ -140,14 +140,14 @@ Body:
 #### `ELIMINAR PRODUCTO`
 
 DELETE/http://localhost:3030/product/{id}<br>
-DELETE/api/product/{id}
+DELETE/api/product/{id}<br>
 
 No necesita body.
 
 #### `REGISTRAR NUEVA ORDEN`
 
 POST/api/oder<br>
-POST/http://localhost:3030/order
+POST/http://localhost:3030/order<br>
 
 Body:
 ```
@@ -173,7 +173,7 @@ Body:
 ```
 #### `ACTUALIZAR ORDEN`
 
-Uso solo para administrador. Se actualiza el estado de la orden.
+Uso solo para administrador. Se actualiza el estado de la orden.<br>
 PATCH/api/order/{id}<br>
 PATCH/http://localhost:3030/order/{id}
 
