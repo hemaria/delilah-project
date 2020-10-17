@@ -29,7 +29,7 @@ Una vez instaladas todas las dependencias puede correrlo con Nodemon o con NPM s
 Copia el contenido de el archivo database.sql en mySQLworkbench y crea las bases de datos. Luego desde el archivo index.js modifica la cadena de conexión a la base de datos.
 ¨const sql = new Sequelize("mysql://deliuser:mypass@localhost:3306/delilah");¨Reemplaza los valores en el parentesis según sea.
 
-### `Ejecutar casos de prueba`
+## `Ejecutar casos de prueba`
 
 Desde postman o insomnia ejecutar las rutas de prueba.
 Por default la configuarción del archivo webservices.json está con el administrador:
@@ -46,4 +46,4 @@ El usuario de prueba por default es:
 
 En Insomnia se debe ingresar los token según sea el caso en la pestaña header, authorization: ¨Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InVzZXIiLCJpYXQiOjE2MDI0Mjg2NTh9.uyDSMmT6ONS\_-x8YsmGs4P04JIHV8zWcpQ5-gH84grE¨
 
-## `Rutas`
+### `Rutas`
