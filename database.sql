@@ -36,10 +36,10 @@ CREATE TABLE `orders` (
   CONSTRAINT `FK_USER_ORDER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE `productos` (
+CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nameproduct` varchar(255) NOT NULL,
-  `productprice` float NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `price` float NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `short` varchar(255) DEFAULT NULL,
   `photo` varchar(45) DEFAULT NULL,

@@ -23,6 +23,18 @@ sql
 const app = express();
 app.use(bodyParser.json());
 
+// RANDOM ====================================================
+function makeid(length) {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 // MIDDLEWARES ================================================
 
 function authenticated(request, response, next) {
@@ -227,38 +239,99 @@ app.post("/user", validate_user, async (request, response) => {
  * Create an order
  */
 
-app.post("/order", [authenticated, validate_product], (request, response) => {
-  const { reference, quantity, notes } = request.body;
-  const query = `INSERT INTO orders (reference, payment, price, user_id, register, status) VALUES ('${reference}', ${quantity},'${notes}`;
-  const result = {
-    result: "success",
-    message: "New order created",
-    order: {
-      id: 1,
-    },
-  };
+app.post("/order", [authenticated], async (request, response) => {
+  const { payment, products } = request.body;
+  const date = moment().format("YYYY-MM-DD HH:mm:ss");
+  const reference = makeid(8);
+  var total_price = 0;
+  let order_id = 0;
 
-  //Output response
-  response.status(201);
-  response.json(result);
+  //Create order
+  const query = `INSERT INTO orders (reference, payment, price, user_id, register, status) VALUES ('${reference}', '${payment}', 0, ${request.uid},'${date}', 1)`;
+  try {
+    await sql.query(query, { raw: true }).then((id) => {
+      order_id = id[0];
+
+      //Insert order detail
+      let i = 0;
+      for (i = 0; i < products.length; i++) {
+        const { product_id, quantity, notes } = products[i];
+        sql
+          .query(`SELECT * FROM products WHERE id='${product_id}'`, {
+            raw: true,
+          })
+          .then(([product]) => {
+            total_price += product[0].price * quantity;
+            //Update order total price
+            sql.query(
+              `UPDATE orders SET price=${total_price} WHERE id=${order_id}`,
+              {
+                raw: true,
+              }
+            );
+          });
+
+        sql.query(
+          `INSERT INTO ordersdetail (order_id, product_id, quantity, notes) VALUES ('${order_id}', '${product_id}', ${quantity},'${notes}')`,
+          { raw: true }
+        );
+      }
+
+      //Success
+      response.status(200);
+      response.json({ order_id, reference });
+    });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
 });
 
 /**
  * Update an order
  */
-app.patch("/order/:id", authorization, (request, response) => {
+app.patch("/order/:id", authorization, async (request, response) => {
   const order_id = request.params.id;
-  const result = {
-    result: "success",
-    message: "Order updated",
-    order: {
-      id: order_id,
-    },
-  };
+  const { status } = request.body;
 
-  //Output response
-  response.status(200);
-  response.json(result);
+  try {
+    await sql
+      .query(`UPDATE orders SET status=${status} WHERE id=${order_id}`, {
+        raw: true,
+      })
+      .then(([result]) => {
+        //Output response
+        if (result.affectedRows > 0) {
+          const result = {
+            result: "success",
+            message: `Order updated to status ${status}`,
+            order: {
+              id: order_id,
+              status: status,
+            },
+          };
+
+          //Output response
+          response.status(200);
+          response.json(result);
+        } else {
+          //Error
+          response.status(400);
+          response.json({
+            message: "No order updated",
+          });
+        }
+      });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
 });
 
 //PRODUCTS ===============================================
@@ -267,7 +340,7 @@ app.patch("/order/:id", authorization, (request, response) => {
  * Get list of products
  */
 app.get("/product", authenticated, async (request, response) => {
-  const query = `SELECT * FROM productos`;
+  const query = `SELECT * FROM products`;
 
   try {
     await sql.query(query, { raw: false }).then(([result]) => {
@@ -294,7 +367,7 @@ app.post(
   [authorization, validate_product],
   async (request, response) => {
     const { name, price, pic, description, short } = request.body;
-    const query = `INSERT INTO productos (nameproduct, productprice, description, short, photo) VALUES ('${name}', ${price}, '${
+    const query = `INSERT INTO products (name, price, description, short, photo) VALUES ('${name}', ${price}, '${
       description || ""
     }', '${short || ""}', '${pic}')`;
 
@@ -320,7 +393,7 @@ app.post(
  * Get product
  */
 app.get("/product/:id", authorization, async (request, response) => {
-  const query = `SELECT * FROM productos WHERE id=${request.params.id}`;
+  const query = `SELECT * FROM products WHERE id=${request.params.id}`;
 
   try {
     await sql.query(query, { raw: false }).then(([result]) => {
@@ -346,7 +419,7 @@ app.patch(
   async (request, response) => {
     const product_id = request.params.id;
     const { name, price, pic, description, short } = request.body;
-    const query = `UPDATE productos SET nameproduct='${name}', productprice='${price}', description='${
+    const query = `UPDATE products SET name='${name}', price='${price}', description='${
       description || ""
     }', short='${short || ""}', photo='${pic}' WHERE id=${product_id}`;
 
@@ -381,7 +454,7 @@ app.patch(
  */
 app.delete("/product/:id", authorization, async (request, response) => {
   const product_id = request.params.id;
-  const query = `DELETE FROM productos WHERE id=${product_id}`;
+  const query = `DELETE FROM products WHERE id=${product_id}`;
 
   try {
     await sql.query(query, { raw: false }).then(([result]) => {
