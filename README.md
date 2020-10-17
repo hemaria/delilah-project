@@ -69,9 +69,9 @@ Body:
 ```
 #### `login User`
 
-POST/api/login
+POST/api/login<br>
 
-- POST/http://localhost:3030/login
+- POST/http://localhost:3030/login<br>
 
 Body:
 ```
@@ -99,7 +99,7 @@ Admin:
 
 Funcionalidad solo para administradores.
 
-POST/api/product
+POST/api/product<br>
 POST/http://localhost:3030/product
 
 Body:
@@ -112,22 +112,22 @@ Body:
 ```
 #### `Obtener todos los productos`
 
-GET/api/product
+GET/api/product<br>
 GET/http://localhost:3030/product
 
 No necesita body
 
 Obtener un producto en especifico:
-GET/http://localhost:3030/product/{id}
+GET/http://localhost:3030/product/{id}<br>
 GET/api/product/{id}
 
 No necesita body
 
 #### `Actualizar productos`
 
-Funcionalidad solo para administradores.
+Funcionalidad solo para administradores.<br>
 
-PATCH/product/{id}
+PATCH/product/{id}<br>
 PATCH/http://localhost:3030/product/{id}
 
 Body:
@@ -139,14 +139,14 @@ Body:
 ```
 #### `ELIMINAR PRODUCTO`
 
-DELETE/http://localhost:3030/product/{id}
+DELETE/http://localhost:3030/product/{id}<br>
 DELETE/api/product/{id}
 
 No necesita body.
 
 #### `REGISTRAR NUEVA ORDEN`
 
-POST/api/oder
+POST/api/oder<br>
 POST/http://localhost:3030/order
 
 Body:
@@ -174,7 +174,7 @@ Body:
 #### `ACTUALIZAR ORDEN`
 
 Uso solo para administrador. Se actualiza el estado de la orden.
-PATCH/api/order/{id}
+PATCH/api/order/{id}<br>
 PATCH/http://localhost:3030/order/{id}
 
 Body:
