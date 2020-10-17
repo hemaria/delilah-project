@@ -50,12 +50,12 @@ En Insomnia se debe ingresar los token según sea el caso en la pestaña header,
 
 #### `Create User`
 
-POST/api/user
+POST/api/user <br>
 
 - POST/http://localhost:3030/user
 
 Body:
-
+"
 {
 "name":"Gloria",
 "email":"glo@gmail.com",
@@ -66,7 +66,7 @@ Body:
 "doctype":"CC",
 "docnum":"144234543"
 }
-
+"
 #### `login User`
 
 POST/api/login
