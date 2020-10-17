@@ -226,7 +226,10 @@ app.post("/user", validate_user, async (request, response) => {
 /**
  * Create an order
  */
-app.post("/order", authenticated, (request, response) => {
+
+app.post("/order", [authenticated, validate_product], (request, response) => {
+  const { reference, quantity, notes } = request.body;
+  const query = `INSERT INTO orders (reference, payment, price, user_id, register, status) VALUES ('${reference}', ${quantity},'${notes}`;
   const result = {
     result: "success",
     message: "New order created",
