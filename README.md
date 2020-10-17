@@ -74,22 +74,26 @@ POST/api/login
 - POST/http://localhost:3030/login
 
 Body:
+```
 {
 "login":"example",
 "password":"la creada en base de usuarios"
 }
-
+```
 Usuario de prueba:
+```
 {
 "login":"hemaria",
 "password":"delilah1"
 }
-
+```
 Admin:
+```
 {
 "login":"admin",
 "password":"admdelilah"
 }
+```
 
 #### `Crear nuevo producto`
 
@@ -99,12 +103,13 @@ POST/api/product
 POST/http://localhost:3030/product
 
 Body:
+```
 {
 "name":"Cesar's salad",
 "price":5.99,
 "pic":"https://via.placeholder.com/150"
 }
-
+```
 #### `Obtener todos los productos`
 
 GET/api/product
@@ -126,11 +131,12 @@ PATCH/product/{id}
 PATCH/http://localhost:3030/product/{id}
 
 Body:
+```
 {
 "name":"Cocacola",
 "price":2.00
 }
-
+```
 #### `ELIMINAR PRODUCTO`
 
 DELETE/http://localhost:3030/product/{id}
@@ -144,7 +150,7 @@ POST/api/oder
 POST/http://localhost:3030/order
 
 Body:
-
+```
 {
 "products":[
 {
@@ -164,7 +170,7 @@ Body:
 }
 ]
 }
-
+```
 #### `ACTUALIZAR ORDEN`
 
 Uso solo para administrador. Se actualiza el estado de la orden.
@@ -172,6 +178,8 @@ PATCH/api/order/{id}
 PATCH/http://localhost:3030/order/{id}
 
 Body:
+```
 {
 "status":2
 }
+```
