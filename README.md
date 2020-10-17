@@ -47,3 +47,131 @@ El usuario de prueba por default es:
 En Insomnia se debe ingresar los token según sea el caso en la pestaña header, authorization: ¨Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InVzZXIiLCJpYXQiOjE2MDI0Mjg2NTh9.uyDSMmT6ONS\_-x8YsmGs4P04JIHV8zWcpQ5-gH84grE¨
 
 ### `Rutas`
+
+#### `Create User`
+
+POST/api/user
+
+- POST/http://localhost:3030/user
+
+Body:
+
+{
+"name":"Gloria",
+"email":"glo@gmail.com",
+"cellphone":"3142333561",
+"address":"CL 157 # 58C - 50 TO 2 AP 303",
+"login":"glorita",
+"password":"abc123",
+"doctype":"CC",
+"docnum":"144234543"
+}
+
+#### `login User`
+
+POST/api/login
+
+- POST/http://localhost:3030/login
+
+Body:
+{
+"login":"example",
+"password":"la creada en base de usuarios"
+}
+
+Usuario de prueba:
+{
+"login":"hemaria",
+"password":"delilah1"
+}
+
+Admin:
+{
+"login":"admin",
+"password":"admdelilah"
+}
+
+#### `Crear nuevo producto`
+
+Funcionalidad solo para administradores.
+
+POST/api/product
+POST/http://localhost:3030/product
+
+Body:
+{
+"name":"Cesar's salad",
+"price":5.99,
+"pic":"https://via.placeholder.com/150"
+}
+
+#### `Obtener todos los productos`
+
+GET/api/product
+GET/http://localhost:3030/product
+
+No necesita body
+
+Obtener un producto en especifico:
+GET/http://localhost:3030/product/{id}
+GET/api/product/{id}
+
+No necesita body
+
+#### `Actualizar productos`
+
+Funcionalidad solo para administradores.
+
+PATCH/product/{id}
+PATCH/http://localhost:3030/product/{id}
+
+Body:
+{
+"name":"Cocacola",
+"price":2.00
+}
+
+#### `ELIMINAR PRODUCTO`
+
+DELETE/http://localhost:3030/product/{id}
+DELETE/api/product/{id}
+
+No necesita body.
+
+#### `REGISTRAR NUEVA ORDEN`
+
+POST/api/oder
+POST/http://localhost:3030/order
+
+Body:
+
+{
+"products":[
+{
+"product_id":1,
+"quantity":1,
+"notes":""
+},
+{
+"product_id":2,
+"quantity":2,
+"notes":""
+},
+{
+"product_id":5,
+"quantity":1,
+"notes":"Sin cebolla"
+}
+]
+}
+
+#### `ACTUALIZAR ORDEN`
+
+Uso solo para administrador. Se actualiza el estado de la orden.
+PATCH/api/order/{id}
+PATCH/http://localhost:3030/order/{id}
+
+Body:
+{
+"status":2
+}
