@@ -47,7 +47,7 @@ Connection has been established successfully
 
 ## Ejecutar casos de prueba
 
-Desde Postman o Insomnia puede importar la configuración del archivo /webservices.json para ejecutar las rutas de prueba.
+Desde [Postman](https://www.postman.com/downloads/) o [Insomnia](https://insomnia.rest/download/) puede importar la configuración del archivo /webservices.json para ejecutar las rutas de prueba.
 
 Por default se asume que existe un usuario administrador creado con la base de datos a partir del archivo /database.sql con los siguientes datos:
 
