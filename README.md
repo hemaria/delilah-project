@@ -57,11 +57,11 @@ Nota: En el cliente Rest para ejecutar las peticiones autenticadas se debe ingre
 
     authorization: Bearer {access_token}
 
-Reemplazando lo contenido entra llaves por el token generado desde el servicio de /login
+Reemplazando lo contenido entre llaves por el Access Token generado desde el servicio de /login
 
 Nota 2: También en 'header' incluir para todas las peticiones: Content-Type: application/json
 
-### `Rutas`
+### `Endpoints`
 
 #### `login User`
 Con este servicio puede retornar un Access Token para el usuario administrador creado por defecto.
@@ -112,8 +112,9 @@ Retorna:
 }
 ```
 
+
 #### `Crear nuevo producto`
-Efectivo para **Condición 2:** Un usuario debe poder listar todos los productos disponibles.<br>
+Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
 POST: http://localhost:3030/product <br>
@@ -127,76 +128,185 @@ Body:
 }
 ```
 
-#### `Obtener todos los productos`
-
-
-GET: http://localhost:3030/product<br>
-
-No necesita body<br>
-
-Obtener un producto en especifico:<br>
-GET/http://localhost:3030/product/{id}<br>
-GET/api/product/{id}
-
-No necesita body
-
-#### `Actualizar productos`
-
-Funcionalidad solo para administradores.<br>
-
-PATCH/product/{id}<br>
-PATCH/http://localhost:3030/product/{id}
-
-Body:
+Retorna:
 ```
 {
-"name":"Cocacola",
-"price":2.00
+    "message": "Created product 14"
 }
 ```
-#### `ELIMINAR PRODUCTO`
 
-DELETE/http://localhost:3030/product/{id}<br>
-DELETE/api/product/{id}<br>
+
+#### `Retornar productos`
+Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
+Debe incluir un Access Token de Usuario Autenticados en Header `authorization: Bearer {access_token}`. <br>
+
+GET: http://localhost:3030/product/{id} <br>
 
 No necesita body.
 
-#### `REGISTRAR NUEVA ORDEN`
+Retorna:
+```
+{
+    "id": 14,
+    "name": "Ensalada Vegana",
+    "price": 34,
+    "description": "",
+    "short": "",
+    "photo": "https://via.placeholder.com/150"
+}
+```
 
-POST/api/oder<br>
-POST/http://localhost:3030/order<br>
+
+#### `Actualizar productos`
+Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
+Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
+
+PATCH: http://localhost:3030/product/{id} <br>
 
 Body:
 ```
 {
-"products":[
-{
-"product_id":1,
-"quantity":1,
-"notes":""
-},
-{
-"product_id":2,
-"quantity":2,
-"notes":""
-},
-{
-"product_id":5,
-"quantity":1,
-"notes":"Sin cebolla"
+	"name":"Ensalada Cesar",
+	"price":6,
+	"pic":"https://via.placeholder.com/150"
 }
+```
+
+Retorna:
+```
+{
+    "message": "Product 14 updated"
+}
+```
+
+
+#### `Eliminar producto`
+Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
+Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
+
+DELETE: http://localhost:3030/product/{id} <br>
+
+No necesita body.
+
+Retorna:
+```
+{
+    "message": "Product 14 deleted"
+}
+```
+
+
+#### `Obtener todos los productos`
+Efectivo para **Condición 2:** Un usuario debe poder listar todos los productos disponibles.<br>
+Debe incluir un Access Token de Usuario Autenticados en Header `authorization: Bearer {access_token}`. <br>
+
+GET: http://localhost:3030/product/ <br>
+
+No necesita body.
+
+Retorna:
+```
+[
+    {
+        "id": 4,
+        "name": "Bagel de Salmón",
+        "price": 42.5,
+        "description": "",
+        "short": "",
+        "photo": "https://via.placeholder.com/150"
+    },
+    {
+        "id": 6,
+        "name": "Sandwich Veggie",
+        "price": 31,
+        "description": "",
+        "short": "",
+        "photo": "https://via.placeholder.com/150"
+    },
+    {
+    "id": 12,
+        "name": "Veggie avocado",
+        "price": 31,
+        "description": "",
+        "short": "",
+        "photo": "https://via.placeholder.com/150"
+    }
 ]
-}
 ```
-#### `ACTUALIZAR ORDEN`
 
-Uso solo para administrador. Se actualiza el estado de la orden.<br>
-PATCH/api/order/{id}<br>
-PATCH/http://localhost:3030/order/{id}
+
+#### `Registrar un nuevo pedido`
+Efectivo para **Condición 3** Un usuario debe poder generar un nuevo pedido al Restaurante con un listado de platos que desea.
+
+POST: http://localhost:3030/order <br>
 
 Body:
 ```
 {
-"status":2
+	"payment":"cash",
+	"products":[
+		{
+			"product_id":13,
+			"quantity":1,
+			"notes":""
+		},
+		{
+			"product_id":6,
+			"quantity":2,
+			"notes":""
+		},
+		{
+			"product_id":12,
+			"quantity":1,
+			"notes":"Sin cebolla"
+		}
+	]
+}
+```
+
+Retorna:
+```
+{
+    "order_id": 36,
+    "reference": "zEguYK9X"
+}
+```
+
+
+#### `Actualizar estado de un pedido`
+Efectivo para **Condición 4:** El usuario con roles de administrador debe poder actualizar el estado del pedido.<br>
+Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
+
+PATCH: http://localhost:3030/order/{id}
+
+Body:
+```
+{
+    "status":2
+}
+```
+
+Retorna:
+```
+{
+    "result": "success",
+    "message": "Order updated to status 2",
+    "order": {
+        "id": "35",
+        "status": 2
+    }
+}
+```
+
+
+#### `Revisión de autorizaciones`
+Efectivo para **Condición 6** Un usuario sin roles de administrador no debe poder crear, editar o eliminar un producto, ni editar o eliminar un pedido. Tampoco debe poder acceder a informaciones de otros usuarios.
+
+En este caso simplemente se puede no enviar el Access Token respectivo o mandar uno sin la respectiva autorización y se retornará un error similar a lo siguiente:
+
+Retorna:
+```
+{
+    "message": "You must provide a valid access_token"
 }
 ```
