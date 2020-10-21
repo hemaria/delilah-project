@@ -63,7 +63,7 @@ Nota 2: También en 'header' incluir para todas las peticiones: Content-Type: ap
 
 ### `Endpoints`
 
-#### `login User`
+#### `Autenticar usuario`
 Con este servicio puede retornar un Access Token para el usuario administrador creado por defecto.
 
 POST: http://localhost:3030/login <br>
@@ -86,7 +86,7 @@ Retorna:
 Nota: Se utiliza el mismo servicio para autenticar a uno de los usuarios que se registren a partir del endpoint a continuación. Solamente debe cambiar los parámetros en Body.<br>
 
 
-#### `Create User`
+#### `Crear nuevo usuario`
 Efectivo para **Condición 1:** Poder registrar un nuevo usuario.
 
 POST: http://localhost:3030/user <br>
@@ -136,7 +136,7 @@ Retorna:
 ```
 
 
-#### `Retornar productos`
+#### `Retornar producto`
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Usuario Autenticados en Header `authorization: Bearer {access_token}`. <br>
 
@@ -157,7 +157,7 @@ Retorna:
 ```
 
 
-#### `Actualizar productos`
+#### `Actualizar producto`
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
