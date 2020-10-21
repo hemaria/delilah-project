@@ -24,7 +24,7 @@ $ npm install
 
 Una vez instaladas todas las dependencias puede correrlo con Nodemon o con NPM start.<br />
 
-### `Instalar base de datos`
+### `base de datos`
 
 Cree una base de datos con usuario y password y ejecute el script /database.sql ubicado en la raíz de este proyecto. Configure la cadena de conexión con los datos respectivos en el archivo /index.js
 
@@ -39,6 +39,9 @@ Una vez todo esté correctamente configurado, puede correr el servidor de prueba
 
 ```shell
 $ nodemon index.js
+
+Servidor iniciado!
+Connection has been established successfully
 ```
 
 
@@ -52,15 +55,41 @@ Por default se asume que existe un usuario administrador creado con la base de d
 
 Nota: En el cliente Rest para ejecutar las peticiones autenticadas se debe ingresar el access_token en la pestaña 'header' así: 
 
-    "authorization: Bearer {access_token}"
+    authorization: Bearer {access_token}
 
-reemplazando lo contenido entra llaves por el token generado desde el servicio de /login
+Reemplazando lo contenido entra llaves por el token generado desde el servicio de /login
+
+Nota 2: También en 'header' incluir para todas las peticiones: Content-Type: application/json
 
 ### `Rutas`
 
-#### `Create User`
+#### `login User`
+Con este servicio puede retornar un Access Token para el usuario administrador creado por defecto.
 
-POST/http://localhost:3030/user <br>
+POST: http://localhost:3030/login <br>
+
+Body:
+```
+{
+    "login":"admin",
+    "password":"admdelilah"
+}
+```
+
+Retorna:
+```
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAyOTExMjI2fQ.HfO6KNoxDMo7-WY05-SCPuO6JS7NtpFq5b6zcbdbYzA"
+}
+```
+
+Nota: Se utiliza el mismo servicio para autenticar a uno de los usuarios que se registren a partir del endpoint a continuación. Solamente debe cambiar los parámetros en Body.<br>
+
+
+#### `Create User`
+Efectivo para **Condición 1:** Poder registrar un nuevo usuario.
+
+POST: http://localhost:3030/user <br>
 
 Body:
 ```
@@ -75,53 +104,33 @@ Body:
     "docnum":"144234543"
 }
 ```
-#### `login User`
 
-POST/api/login<br>
-
-- POST/http://localhost:3030/login<br>
-
-Body:
+Retorna:
 ```
 {
-"login":"example",
-"password":"la creada en base de usuarios"
-}
-```
-Usuario de prueba:
-```
-{
-"login":"hemaria",
-"password":"delilah1"
-}
-```
-Admin:
-```
-{
-"login":"admin",
-"password":"admdelilah"
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6InVzZXIiLCJpYXQiOjE2MDMyNzc5MTN9.xoFW0rmaKQkrLWlvX6f8xELXl6jJ6pofaRYn9hh3ajA"
 }
 ```
 
 #### `Crear nuevo producto`
+Efectivo para **Condición 2:** Un usuario debe poder listar todos los productos disponibles.<br>
+Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
-Funcionalidad solo para administradores.<br>
-
-POST/api/product<br>
-POST/http://localhost:3030/product
+POST: http://localhost:3030/product <br>
 
 Body:
 ```
 {
-"name":"Cesar's salad",
-"price":5.99,
-"pic":"https://via.placeholder.com/150"
+    "name":"Cesar's salad",
+    "price":5.99,
+    "pic":"https://via.placeholder.com/150"
 }
 ```
+
 #### `Obtener todos los productos`
 
-GET/api/product<br>
-GET/http://localhost:3030/product<br>
+
+GET: http://localhost:3030/product<br>
 
 No necesita body<br>
 
