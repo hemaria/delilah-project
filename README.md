@@ -22,8 +22,6 @@ Entre al directorio clonado y ejecute el comando.<br />
 $ npm install
 ```
 
-Una vez instaladas todas las dependencias puede correrlo con Nodemon o con NPM start.<br />
-
 ### `base de datos`
 
 Cree una base de datos con usuario y password y ejecute el script /database.sql ubicado en la raíz de este proyecto. Configure la cadena de conexión con los datos respectivos en el archivo /index.js
@@ -35,7 +33,9 @@ Reemplaza los valores en llaves según sea el caso.
 
 ### `nodemon index.js`
 
-Una vez todo esté correctamente configurado, puede correr el servidor de pruebas ejecutando `nodemon index.js` o simplemente `node index.js`.<br /> Si todo está correcto debería ver en consola los mensajes: 'Servidor iniciado!' y 'Connection has been established successfully'.
+Una vez todo esté correctamente configurado, puede correr el servidor de pruebas ejecutando `nodemon index.js` o simplemente `node index.js`.
+
+Si todo está correcto debería ver en consola los mensajes: 'Servidor iniciado!' y 'Connection has been established successfully'.
 
 ```shell
 $ nodemon index.js
@@ -48,6 +48,7 @@ Connection has been established successfully
 ## Ejecutar casos de prueba
 
 Desde Postman o Insomnia puede importar la configuración del archivo /webservices.json para ejecutar las rutas de prueba.
+
 Por default se asume que existe un usuario administrador creado con la base de datos a partir del archivo /database.sql con los siguientes datos:
 
     "login":"admin",
