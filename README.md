@@ -26,45 +26,53 @@ Una vez instaladas todas las dependencias puede correrlo con Nodemon o con NPM s
 
 ### `Instalar base de datos`
 
-Copia el contenido de el archivo database.sql en mySQLworkbench y crea las bases de datos. Luego desde el archivo index.js modifica la cadena de conexión a la base de datos.
-¨const sql = new Sequelize("mysql://deliuser:mypass@localhost:3306/delilah");¨Reemplaza los valores en el parentesis según sea.
+Cree una base de datos con usuario y password y ejecute el script /database.sql ubicado en la raíz de este proyecto. Configure la cadena de conexión con los datos respectivos en el archivo /index.js
 
-## `Ejecutar casos de prueba`
+```shell
+const sql = new Sequelize("mysql://{user}:{password}@{host}:{port}/{database}");
+```
+Reemplaza los valores en llaves según sea el caso.
 
-Desde postman o insomnia ejecutar las rutas de prueba.
-Por default la configuarción del archivo webservices.json está con el administrador:
+### `nodemon index.js`
+
+Una vez todo esté correctamente configurado, puede correr el servidor de pruebas ejecutando `nodemon index.js` o simplemente `node index.js`.<br /> Si todo está correcto debería ver en consola los mensajes: 'Servidor iniciado!' y 'Connection has been established successfully'.
+
+```shell
+$ nodemon index.js
+```
+
+
+## Ejecutar casos de prueba
+
+Desde Postman o Insomnia puede importar la configuración del archivo /webservices.json para ejecutar las rutas de prueba.
+Por default se asume que existe un usuario administrador creado con la base de datos a partir del archivo /database.sql con los siguientes datos:
 
     "login":"admin",
     "password":"admdelilah"
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAyNDI4NTgzfQ.iao6lUNqhtBNM7Kahs7lP31BJW40AAkoh5qo4qDOQTk"
 
-El usuario de prueba por default es:
+Nota: En el cliente Rest para ejecutar las peticiones autenticadas se debe ingresar el access_token en la pestaña 'header' así: 
 
-    "login":"hemaria",
-    "password":"delilah1"
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE2MDI0Mjg1NTB9.chaKyoK5scs5rsyTRUXSxlH9EMLr-ryNCbDUrTUmm1U"
+    "authorization: Bearer {access_token}"
 
-En Insomnia se debe ingresar los token según sea el caso en la pestaña header, authorization: ¨Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InVzZXIiLCJpYXQiOjE2MDI0Mjg2NTh9.uyDSMmT6ONS\_-x8YsmGs4P04JIHV8zWcpQ5-gH84grE¨
+reemplazando lo contenido entra llaves por el token generado desde el servicio de /login
 
 ### `Rutas`
 
 #### `Create User`
 
-POST/api/user <br>
-
-- POST/http://localhost:3030/user
+POST/http://localhost:3030/user <br>
 
 Body:
 ```
 {
-"name":"Gloria",
-"email":"glo@gmail.com",
-"cellphone":"3142333561",
-"address":"CL 157 # 58C - 50 TO 2 AP 303",
-"login":"glorita",
-"password":"abc123",
-"doctype":"CC",
-"docnum":"144234543"
+    "name":"Gloria",
+    "email":"glo@gmail.com",
+    "cellphone":"3142333561",
+    "address":"CL 157 # 58C - 50 TO 2 AP 303",
+    "login":"glorita",
+    "password":"abc123",
+    "doctype":"CC",
+    "docnum":"144234543"
 }
 ```
 #### `login User`

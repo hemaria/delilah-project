@@ -1,8 +1,6 @@
-CREATE SCHEMA `delilah`;
-
 DROP TABLE IF EXISTS `ordersdetail`;
 DROP TABLE IF EXISTS `orders`;
-DROP TABLE IF EXISTS `productos`;
+DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
@@ -34,7 +32,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `FK_USER_ORDER_idx` (`user_id`),
   CONSTRAINT `FK_USER_ORDER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -44,7 +42,7 @@ CREATE TABLE `products` (
   `short` varchar(255) DEFAULT NULL,
   `photo` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-);
+)ENGINE=InnoDB;
 
 CREATE TABLE `ordersdetail` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -56,8 +54,8 @@ CREATE TABLE `ordersdetail` (
   KEY `FK_ORDER_id` (`order_id`),
   KEY `FK_PRODUCT_id` (`product_id`),
   CONSTRAINT `FK_ORDER_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_PRODUCT_id` FOREIGN KEY (`product_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-);
+  CONSTRAINT `FK_PRODUCT_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+)ENGINE=InnoDB;
 
 -- User Admin
 INSERT INTO `users` (`name`, `login`, `email`, `pwd`, `role`, `register`, `status`) VALUES ('Administrator', 'admin', 'admin@mail.com', SHA1('admdelilah'), 'admin', '2020-10-10', '1');
