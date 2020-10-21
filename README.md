@@ -1,4 +1,4 @@
-# PROJECTO DELILAH
+# PROYECTO DELILAH
 
 A continuación encontrará las isntrucciones para ejecutar el proyecto.
 
