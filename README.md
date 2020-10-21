@@ -80,7 +80,7 @@ Body:
 Retorna:
 ```
 {
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAyOTExMjI2fQ.HfO6KNoxDMo7-WY05-SCPuO6JS7NtpFq5b6zcbdbYzA"
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAyOTExMjI2fQ.HfO6KNoxDMo7-WY05-SCPuO6JS7NtpFq5b6zcbdbYzA"
 }
 ```
 
@@ -167,9 +167,9 @@ PATCH: http://localhost:3030/product/{id} <br>
 Body:
 ```
 {
-	"name":"Ensalada Cesar",
-	"price":6,
-	"pic":"https://via.placeholder.com/150"
+    "name":"Ensalada Cesar",
+    "price":6,
+    "pic":"https://via.placeholder.com/150"
 }
 ```
 
@@ -244,24 +244,24 @@ POST: http://localhost:3030/order <br>
 Body:
 ```
 {
-	"payment":"cash",
-	"products":[
-		{
-			"product_id":13,
-			"quantity":1,
-			"notes":""
-		},
-		{
-			"product_id":6,
-			"quantity":2,
-			"notes":""
-		},
-		{
-			"product_id":12,
-			"quantity":1,
-			"notes":"Sin cebolla"
-		}
-	]
+    "payment":"cash",
+    "products":[
+        {
+            "product_id":13,
+            "quantity":1,
+            "notes":""
+        },
+        {
+            "product_id":6,
+            "quantity":2,
+            "notes":""
+        },
+        {
+            "product_id":12,
+            "quantity":1,
+            "notes":"Sin cebolla"
+        }
+    ]
 }
 ```
 
