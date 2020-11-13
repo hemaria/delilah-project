@@ -276,6 +276,14 @@ Retorna:
 
 #### `Actualizar estado de un pedido`
 Efectivo para **Condición 4:** El usuario con roles de administrador debe poder actualizar el estado del pedido.<br>
+Siendo los siguientes números correspondientes a cada estado: <br>
+Eliminado:0<br>
+Nuevo: 1 <br>
+Confirmado: 2 <br>
+Preparando: 3 <br>
+Enviando: 4 <br>
+Entregando: 5 <br>
+
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
 PATCH: http://localhost:3030/order/{id}
