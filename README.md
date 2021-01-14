@@ -29,6 +29,7 @@ Cree una base de datos con usuario y password y ejecute el script /database.sql 
 ```shell
 const sql = new Sequelize("mysql://{user}:{password}@{host}:{port}/{database}");
 ```
+
 Reemplaza los valores en llaves según sea el caso.
 
 ### `nodemon index.js`
@@ -44,7 +45,6 @@ Servidor iniciado!
 Connection has been established successfully
 ```
 
-
 ## Ejecutar casos de prueba
 
 Desde [Postman](https://www.postman.com/downloads/) o [Insomnia](https://insomnia.rest/download/) puede importar la configuración del archivo /webservices.json para ejecutar las rutas de prueba.
@@ -54,7 +54,7 @@ Por default se asume que existe un usuario administrador creado con la base de d
     "login":"admin",
     "password":"admdelilah"
 
-Nota: En el cliente Rest para ejecutar las peticiones autenticadas se debe ingresar el access_token en la pestaña 'header' así: 
+Nota: En el cliente Rest para ejecutar las peticiones autenticadas se debe ingresar el access_token en la pestaña 'header' así:
 
     authorization: Bearer {access_token}
 
@@ -65,11 +65,13 @@ Nota 2: También en 'header' incluir para todas las peticiones: Content-Type: ap
 ### `Endpoints`
 
 #### `Autenticar usuario`
+
 Con este servicio puede retornar un Access Token para el usuario administrador creado por defecto.
 
 POST: http://localhost:3030/login <br>
 
 Body:
+
 ```
 {
     "login":"admin",
@@ -78,6 +80,7 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAyOTExMjI2fQ.HfO6KNoxDMo7-WY05-SCPuO6JS7NtpFq5b6zcbdbYzA"
@@ -86,13 +89,14 @@ Retorna:
 
 Nota: Se utiliza el mismo servicio para autenticar a uno de los usuarios que se registren a partir del endpoint a continuación. Solamente debe cambiar los parámetros en Body.<br>
 
-
 #### `Crear nuevo usuario`
+
 Efectivo para **Condición 1:** Poder registrar un nuevo usuario.
 
 POST: http://localhost:3030/user <br>
 
 Body:
+
 ```
 {
     "name":"Gloria",
@@ -107,20 +111,22 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6InVzZXIiLCJpYXQiOjE2MDMyNzc5MTN9.xoFW0rmaKQkrLWlvX6f8xELXl6jJ6pofaRYn9hh3ajA"
 }
 ```
 
-
 #### `Crear nuevo producto`
+
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
 POST: http://localhost:3030/product <br>
 
 Body:
+
 ```
 {
     "name":"Cesar's salad",
@@ -130,14 +136,15 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "message": "Created product 14"
 }
 ```
 
-
 #### `Retornar producto`
+
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Usuario Autenticados en Header `authorization: Bearer {access_token}`. <br>
 
@@ -146,6 +153,7 @@ GET: http://localhost:3030/product/{id} <br>
 No necesita body.
 
 Retorna:
+
 ```
 {
     "id": 14,
@@ -157,14 +165,15 @@ Retorna:
 }
 ```
 
-
 #### `Actualizar producto`
+
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
 PATCH: http://localhost:3030/product/{id} <br>
 
 Body:
+
 ```
 {
     "name":"Ensalada Cesar",
@@ -174,14 +183,15 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "message": "Product 14 updated"
 }
 ```
 
-
 #### `Eliminar producto`
+
 Efectivo para **Condición 5:** Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).<br>
 Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
 
@@ -190,14 +200,15 @@ DELETE: http://localhost:3030/product/{id} <br>
 No necesita body.
 
 Retorna:
+
 ```
 {
     "message": "Product 14 deleted"
 }
 ```
 
-
 #### `Obtener todos los productos`
+
 Efectivo para **Condición 2:** Un usuario debe poder listar todos los productos disponibles.<br>
 Debe incluir un Access Token de Usuario Autenticados en Header `authorization: Bearer {access_token}`. <br>
 
@@ -206,6 +217,7 @@ GET: http://localhost:3030/product/ <br>
 No necesita body.
 
 Retorna:
+
 ```
 [
     {
@@ -235,13 +247,14 @@ Retorna:
 ]
 ```
 
-
 #### `Registrar un nuevo pedido`
+
 Efectivo para **Condición 3** Un usuario debe poder generar un nuevo pedido al Restaurante con un listado de platos que desea.
 
 POST: http://localhost:3030/order <br>
 
 Body:
+
 ```
 {
     "payment":"cash",
@@ -266,6 +279,7 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "order_id": 36,
@@ -273,8 +287,8 @@ Retorna:
 }
 ```
 
-
 #### `Actualizar estado de un pedido`
+
 Efectivo para **Condición 4:** El usuario con roles de administrador debe poder actualizar el estado del pedido.<br>
 Siendo los siguientes números correspondientes a cada estado: <br>
 Eliminado:0<br>
@@ -289,6 +303,7 @@ Debe incluir un Access Token de Administrador en Header `authorization: Bearer {
 PATCH: http://localhost:3030/order/{id}
 
 Body:
+
 ```
 {
     "status":2
@@ -296,6 +311,7 @@ Body:
 ```
 
 Retorna:
+
 ```
 {
     "result": "success",
@@ -307,13 +323,31 @@ Retorna:
 }
 ```
 
+#### `Borrar un pedido`
+
+Efectivo para **Condición 6:** El usuario con roles de administrador debe poder eliminar un pedido.<br>
+
+Debe incluir un Access Token de Administrador en Header `authorization: Bearer {access_token}`. <br>
+
+DELETE: http://localhost:3030/order/{id}
+
+Retorna:
+
+```
+{
+    "result": "success",
+    "message": "Order X deleted"
+}
+```
 
 #### `Revisión de autorizaciones`
+
 Efectivo para **Condición 6** Un usuario sin roles de administrador no debe poder crear, editar o eliminar un producto, ni editar o eliminar un pedido. Tampoco debe poder acceder a informaciones de otros usuarios.
 
 En este caso simplemente se puede no enviar el Access Token respectivo o mandar uno sin la respectiva autorización y se retornará un error similar a lo siguiente:
 
 Retorna:
+
 ```
 {
     "message": "You must provide a valid access_token"
