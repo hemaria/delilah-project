@@ -299,9 +299,12 @@ app.patch("/order/:id", authorization, async (request, response) => {
 
   try {
     await sql
-      .query(`UPDATE orders SET status=${status} WHERE id=${order_id}`, {
-        raw: true,
-      })
+      .query(
+        `UPDATE orders SET status=${status} WHERE id=${order_id} AND status=1`,
+        {
+          raw: true,
+        }
+      )
       .then(([result]) => {
         //Output response
         if (result.affectedRows > 0) {
@@ -322,6 +325,45 @@ app.patch("/order/:id", authorization, async (request, response) => {
           response.status(400);
           response.json({
             message: "No order updated",
+          });
+        }
+      });
+  } catch (err) {
+    //Error
+    response.status(400);
+    response.json({
+      message: err.toString(),
+    });
+  }
+});
+
+/**
+ * Delete an order
+ */
+app.delete("/order/:id", authorization, async (request, response) => {
+  const order_id = request.params.id;
+
+  try {
+    await sql
+      .query(`UPDATE orders SET status=0 WHERE id=${order_id} AND status > 0`, {
+        raw: true,
+      })
+      .then(([result]) => {
+        //Output response
+        if (result.affectedRows > 0) {
+          const result = {
+            result: "success",
+            message: `Order ${order_id} deleted`,
+          };
+
+          //Output response
+          response.status(200);
+          response.json(result);
+        } else {
+          //Error
+          response.status(400);
+          response.json({
+            message: "Order unknown",
           });
         }
       });
